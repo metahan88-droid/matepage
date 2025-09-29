@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경기전 좌표 평면 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        /* Grid lines style */
+        .grid-line {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        .grid-line.vertical {
+            width: 1px;
+            height: 100%;
+        }
+        .grid-line.horizontal {
+            height: 1px;
+            width: 100%;
+        }
+        /* Axis lines style */
+        .axis-line {
+            position: absolute;
+            background-color: rgba(255, 223, 186, 0.9);
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        .axis-line.x-axis {
+            height: 2px;
+            width: 100%;
+        }
+        .axis-line.y-axis {
+            width: 2px;
+            height: 100%;
+        }
+        /* Grid numbers style */
+        .grid-number {
+            position: absolute;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            user-select: none;
+        }
+        .point-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ff3838;
+            border: 2px solid white;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            display: none; /* Initially hidden */
+        }
+        .point-marker.correct {
+            background-color: #00e676;
+        }
+        .point-marker.incorrect {
+            background-color: #ff3838;
+        }
+        .toast {
+            transition: opacity 0.5s, transform 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-800 text-white flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-5xl mx-auto">
+        <h1 class="text-3xl md:text-4xl font-bold text-center mb-2 text-amber-300">경기전 약도로 배우는 좌표 평면</h1>
+        <p class="text-center text-gray-300 mb-6">정문(①)을 원점 (0, 0)으로 생각하고, 다른 장소들의 좌표를 찾아보세요!</p>
+
+        <!-- Map and Coordinate Plane Container -->
+        <div id="map-container" class="relative w-full max-w-2xl mx-auto aspect-square rounded-xl shadow-2xl overflow-hidden border-4 border-amber-200">
+            <img src="https://i.postimg.cc/7LVxR7zz/unnamed.jpg" alt="경기전 약도" class="w-full h-full object-contain bg-gray-900">
+            
+            <!-- Grid lines and numbers will be injected here by JS -->
+            <div id="grid-overlay" class="absolute top-0 left-0 w-full h-full"></div>
+            
+            <!-- Point marker -->
+            <div id="point-marker" class="point-marker"></div>
+        </div>
+
+        <!-- Interactive Question Panel -->
+        <div class="bg-gray-700 p-6 rounded-xl shadow-lg mt-6 border-2 border-gray-600">
+            <div id="question-card" class="text-center">
+                <p class="text-lg mb-4">문제</p>
+                <h2 id="question-text" class="text-2xl font-bold text-amber-300 h-16 flex items-center justify-center"></h2>
+                
+                <div class="flex items-center justify-center gap-4 my-5">
+                    <span class="text-2xl font-bold">(</span>
+                    <input type="number" id="x-input" placeholder="x" step="0.5" class="bg-gray-800 border-2 border-gray-500 rounded-lg w-20 h-14 text-center text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <span class="text-2xl font-bold">,</span>
+                    <input type="number" id="y-input" placeholder="y" step="0.5" class="bg-gray-800 border-2 border-gray-500 rounded-lg w-20 h-14 text-center text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <span class="text-2xl font-bold">)</span>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button id="check-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-transform transform hover:scale-105">
+                        확인
+                    </button>
+                    <button id="next-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-lg transition-transform transform hover:scale-105">
+                        다음 문제
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast message for feedback -->
+    <div id="toast" class="toast fixed bottom-10 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl text-xl font-bold opacity-0 translate-y-10">
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        // NOTE: These are absolute coordinates on a hidden grid.
+        const locations = [
+            { name: '정문 ① (원점)', x: 0, y: -7 },
+            { name: '장소 ②', x: 3.5, y: -7 },
+            { name: '장소 ③ (정전)', x: -1, y: 0 },
+            { name: '장소 ④', x: -4.5, y: -3.5 },
+            { name: '장소 ⑤', x: 3, y: -2.5 },
+            { name: '장소 ⑥', x: -4.5, y: 4.5 }
+        ];
+        
+        // This point becomes the user's (0,0).
+        const gateCoords = { x: 0, y: -7 }; 
+
+        let currentQuestionIndex = 0;
+
+        const questionText = document.getElementById('question-text');
+        const xInput = document.getElementById('x-input');
+        const yInput = document.getElementById('y-input');
+        const checkBtn = document.getElementById('check-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pointMarker = document.getElementById('point-marker');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        
+        function setupCoordinatePlane() {
+            const gridOverlay = document.getElementById('grid-overlay');
+            const mapContainer = document.getElementById('map-container');
+            gridOverlay.innerHTML = ''; // Clear previous grid
+            
+            const rangeX = 10;
+            const rangeY = 10;
+
+            const containerWidth = mapContainer.offsetWidth;
+            const containerHeight = mapContainer.offsetHeight;
+
+            // Calculate axis positions based on the gate's coordinates
+            const xAxisTop = ((-gateCoords.y + rangeY) / (2 * rangeY)) * 100;
+            const yAxisLeft = ((gateCoords.x + rangeX) / (2 * rangeX)) * 100;
+
+            // Draw grid lines and numbers
+            for (let i = -rangeX; i <= rangeX; i++) {
+                // Do not draw a number at the origin's x-coordinate
+                if (i === gateCoords.x) continue;
+                // Vertical lines
+                const xPos = ((i + rangeX) / (2 * rangeX)) * 100;
+                const vLine = document.createElement('div');
+                vLine.className = 'grid-line vertical';
+                vLine.style.left = `${xPos}%`;
+                gridOverlay.appendChild(vLine);
+
+                // X-axis numbers
+                const xNum = document.createElement('div');
+                xNum.className = 'grid-number';
+                xNum.textContent = i - gateCoords.x; // Display number relative to origin
+                xNum.style.left = `calc(${xPos}% - 10px)`;
+                xNum.style.top = `calc(${xAxisTop}% + 5px)`; // Position along the new x-axis
+                gridOverlay.appendChild(xNum);
+            }
+
+            for (let i = -rangeY; i <= rangeY; i++) {
+                 // Do not draw a number at the origin's y-coordinate
+                 if (i === gateCoords.y) continue;
+                // Horizontal lines
+                const yPos = ((-i + rangeY) / (2 * rangeY)) * 100;
+                const hLine = document.createElement('div');
+                hLine.className = 'grid-line horizontal';
+                hLine.style.top = `${yPos}%`;
+                gridOverlay.appendChild(hLine);
+                
+                // Y-axis numbers
+                const yNum = document.createElement('div');
+                yNum.className = 'grid-number';
+                // Adjust the displayed number to make the gate's y-position appear as 0
+                yNum.textContent = i - gateCoords.y; // Display number relative to origin
+                yNum.style.top = `calc(${yPos}% - 10px)`;
+                yNum.style.left = `calc(${yAxisLeft}% + 5px)`; // Position along the new y-axis
+                gridOverlay.appendChild(yNum);
+            }
+
+            // Draw axis lines
+            const xAxis = document.createElement('div');
+            xAxis.className = 'axis-line x-axis';
+            xAxis.style.top = `${xAxisTop}%`;
+            xAxis.style.transform = 'translateY(-50%)';
+            gridOverlay.appendChild(xAxis);
+
+            const yAxis = document.createElement('div');
+            yAxis.className = 'axis-line y-axis';
+            yAxis.style.left = `${yAxisLeft}%`;
+            yAxis.style.transform = 'translateX(-50%)';
+            gridOverlay.appendChild(yAxis);
+        }
+        
+        function showToast(message, isSuccess) {
+            toastMessage.textContent = message;
+            toast.className = `toast fixed bottom-10 text-white py-3 px-6 rounded-lg shadow-xl text-xl font-bold opacity-0 translate-y-10 ${isSuccess ? 'bg-green-600' : 'bg-red-600'}`;
+            
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'translate-y-10');
+                toast.classList.add('opacity-100', 'translate-y-0');
+            }, 100);
+
+            // Animate out
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-10');
+            }, 3000);
+        }
+
+        function displayQuestion() {
+            const question = locations[currentQuestionIndex];
+            questionText.innerHTML = `<span class="text-white">'${question.name}'</span> 의<br>좌표는 무엇일까요?`;
+            clearInputs();
+        }
+
+        function clearInputs() {
+            xInput.value = '';
+            yInput.value = '';
+            pointMarker.style.display = 'none';
+        }
+        
+        function placeMarker(userInputX, userInputY, isCorrect) {
+            // Convert user's relative coordinates back to the hidden absolute coordinates for plotting
+            const absoluteX = userInputX + gateCoords.x;
+            const absoluteY = userInputY + gateCoords.y;
+
+            const rangeX = 10;
+            const rangeY = 10;
+            
+            const xPos = ((absoluteX + rangeX) / (2 * rangeX)) * 100;
+            const yPos = ((-absoluteY + rangeY) / (2 * rangeY)) * 100;
+
+            pointMarker.style.left = `${xPos}%`;
+            pointMarker.style.top = `${yPos}%`;
+            pointMarker.classList.toggle('correct', isCorrect);
+            pointMarker.classList.toggle('incorrect', !isCorrect);
+            pointMarker.style.display = 'block';
+        }
+
+        function checkAnswer() {
+            const currentQuestion = locations[currentQuestionIndex];
+            const userX = parseFloat(xInput.value);
+            const userY = parseFloat(yInput.value);
+
+            if (isNaN(userX) || isNaN(userY)) {
+                showToast("좌표를 모두 입력해주세요!", false);
+                return;
+            }
+
+            // Calculate the correct answer relative to the gate (the new origin)
+            const correctRelativeX = currentQuestion.x - gateCoords.x;
+            const correctRelativeY = currentQuestion.y - gateCoords.y;
+
+            if (userX === correctRelativeX && userY === correctRelativeY) {
+                showToast("정답입니다!", true);
+                placeMarker(userX, userY, true);
+            } else {
+                showToast("아쉬워요. 다시 시도해보세요!", false);
+                placeMarker(userX, userY, false);
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex = (currentQuestionIndex + 1) % locations.length;
+            displayQuestion();
+        }
+        
+        // Event Listeners
+        checkBtn.addEventListener('click', checkAnswer);
+        nextBtn.addEventListener('click', nextQuestion);
+        // Allow pressing Enter to check answer
+        yInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        // Initial setup
+        window.addEventListener('load', () => {
+            setupCoordinatePlane();
+            displayQuestion();
+        });
+        window.addEventListener('resize', setupCoordinatePlane);
+
+    </script>
+</body>
+</html>
+
