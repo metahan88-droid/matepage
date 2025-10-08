@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인터랙티브 원기둥 생성기</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f2f5;
+        }
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 90%;
+            max-width: 500px;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .slider-container label {
+            white-space: nowrap;
+            font-size: 0.9rem;
+            color: #334155;
+            width: 80px;
+            text-align: right;
+        }
+        .slider-container input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+        .slider-container input[type="range"]:hover {
+            opacity: 1;
+        }
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4f46e5;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .slider-container input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #4f46e5;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <div id="controls">
+        <!-- UPDATED: 반지름 조절 슬라이더 추가 -->
+        <div class="slider-container">
+            <label for="radius-slider">반지름: <span id="radius-value">5</span></label>
+            <input type="range" id="radius-slider" min="3" max="8" value="5" step="0.1">
+        </div>
+        <div class="slider-container">
+            <label for="height-slider">높이: <span id="height-value">6</span></label>
+            <input type="range" id="height-slider" min="2" max="10" value="6" step="0.1">
+        </div>
+        <div class="slider-container">
+            <label for="circles-slider">원 개수: <span id="circles-value">20</span></label>
+            <input type="range" id="circles-slider" min="10" max="30" value="20" step="1">
+        </div>
+    </div>
+    
+    <!-- Three.js and OrbitControls via CDN -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- 기본 설정 ---
+        let scene, camera, renderer, controls;
+        let mainGroup = new THREE.Group();
+
+        // --- DOM 요소 ---
+        const container = document.getElementById('container');
+        const radiusSlider = document.getElementById('radius-slider'); // UPDATED
+        const heightSlider = document.getElementById('height-slider');
+        const circlesSlider = document.getElementById('circles-slider');
+        const radiusValue = document.getElementById('radius-value'); // UPDATED
+        const heightValue = document.getElementById('height-value');
+        const circlesValue = document.getElementById('circles-value');
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f2f5);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(10, 10, 15);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            directionalLight.position.set(5, 10, 7.5);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 1024;
+            directionalLight.shadow.mapSize.height = 1024;
+            scene.add(directionalLight);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            const planeGeometry = new THREE.PlaneGeometry(50, 50);
+            const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xe5e7eb });
+            const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            plane.rotation.x = -Math.PI / 2;
+            plane.position.y = -10; 
+            plane.receiveShadow = true;
+            scene.add(plane);
+
+            scene.add(mainGroup);
+
+            radiusSlider.addEventListener('input', updateScene); // UPDATED
+            heightSlider.addEventListener('input', updateScene);
+            circlesSlider.addEventListener('input', updateScene);
+            window.addEventListener('resize', onWindowResize);
+
+            updateScene();
+            animate();
+        }
+        
+        function updateScene() {
+            // UPDATED: 슬라이더에서 모든 값 읽기
+            const radius = parseFloat(radiusSlider.value);
+            const height = parseFloat(heightSlider.value);
+            const numCircles = parseInt(circlesSlider.value);
+
+            // UPDATED: UI 레이블 업데이트
+            radiusValue.textContent = radius.toFixed(1);
+            heightValue.textContent = height.toFixed(1);
+            circlesValue.textContent = numCircles;
+
+            while (mainGroup.children.length > 0) {
+                mainGroup.remove(mainGroup.children[0]);
+            }
+
+            // UPDATED: 작은 원 반지름을 동적으로 계산
+            const SMALL_CIRCLE_RADIUS = radius / 6;
+
+            // UPDATED: 메인 원기둥 생성 시 동적 반지름 사용
+            const cylinderGeometry = new THREE.CylinderGeometry(radius, radius, height, 64);
+            const cylinderMaterial = new THREE.MeshStandardMaterial({
+                color: 0x6366f1,
+                metalness: 0.1,
+                roughness: 0.5,
+            });
+            const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+            cylinder.castShadow = true;
+            cylinder.receiveShadow = true;
+            cylinder.position.y = height / 2 - 10;
+            mainGroup.add(cylinder);
+
+            // --- Collision Resolution Logic ---
+            const smallCirclesGroup = new THREE.Group();
+            const maxPlacementRadius = radius - SMALL_CIRCLE_RADIUS;
+            
+            let positions = [];
+            const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+            for (let i = 0; i < numCircles; i++) {
+                const theta = i * goldenAngle;
+                const r = Math.sqrt(i / (numCircles - 1)) * maxPlacementRadius;
+                positions.push(new THREE.Vector2(r * Math.cos(theta), r * Math.sin(theta)));
+            }
+            
+            // UPDATED: 충돌 감지 거리 동적 계산
+            const minDistance = 2 * SMALL_CIRCLE_RADIUS;
+            const relaxationIterations = 10; 
+            for (let k = 0; k < relaxationIterations; k++) {
+                for (let i = 0; i < positions.length; i++) {
+                    for (let j = i + 1; j < positions.length; j++) {
+                        const p1 = positions[i];
+                        const p2 = positions[j];
+                        const delta = new THREE.Vector2().subVectors(p2, p1);
+                        const distance = delta.length();
+                        if (distance < minDistance) {
+                            const overlap = minDistance - distance;
+                            const pushVector = delta.normalize().multiplyScalar(overlap * 0.5);
+                            p1.sub(pushVector);
+                            p2.add(pushVector);
+                        }
+                    }
+                }
+                for (let i = 0; i < positions.length; i++) {
+                    const p = positions[i];
+                    if (p.length() > maxPlacementRadius) {
+                        p.normalize().multiplyScalar(maxPlacementRadius);
+                    }
+                }
+            }
+
+            for (const pos of positions) {
+                // UPDATED: 작은 원 지오메트리 동적 생성
+                const smallCircleGeometry = new THREE.CylinderGeometry(SMALL_CIRCLE_RADIUS, SMALL_CIRCLE_RADIUS, 0.1, 32);
+                const smallCircleMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xec4899,
+                    metalness: 0.1,
+                    roughness: 0.4,
+                    emissive: 0x1a1a1a,
+                    emissiveIntensity: 0.05
+                });
+                const smallCircle = new THREE.Mesh(smallCircleGeometry, smallCircleMaterial);
+                smallCircle.position.set(pos.x, 0.06, pos.y);
+                smallCircle.castShadow = true;
+                smallCirclesGroup.add(smallCircle);
+            }
+            
+            smallCirclesGroup.position.y = height / 2;
+            cylinder.add(smallCirclesGroup);
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>
+
