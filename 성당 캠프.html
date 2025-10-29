@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="성당포구 힐링 캠프 준비사항 및 일정">
+    <title>성당포구 힐링 캠프</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --border: #e5e7eb;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 10px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before, .header::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .header::before {
+            top: -50%; right: -10%;
+            width: 300px; height: 300px;
+        }
+        
+        .header::after {
+            bottom: -30%; left: -5%;
+            width: 200px; height: 200px;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            opacity: 0.95;
+            margin: 5px 0;
+        }
+        
+        .tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            font-weight: 600;
+            color: #6b7280;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .tab:hover {
+            background: rgba(102, 126, 234, 0.05);
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: white;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            font-weight: 700;
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 25px 0 15px 0;
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            font-weight: 600;
+        }
+        
+        .info-box {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .info-box.primary {
+            background: #eff6ff;
+            border-color: var(--info);
+            color: #1e40af;
+        }
+        
+        .info-box.warning {
+            background: #fef3c7;
+            border-color: var(--warning);
+            color: #92400e;
+        }
+        
+        .info-box.success {
+            background: #d1fae5;
+            border-color: var(--success);
+            color: #065f46;
+        }
+        
+        .info-box.danger {
+            background: #fee2e2;
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+            z-index: 1;
+        }
+        
+        .time {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .activity-title {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .activity-desc {
+            color: #4b5563;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .activity-desc strong {
+            color: var(--dark);
+            display: block;
+            margin-top: 10px;
+        }
+        
+        .person-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+        }
+        
+        .person-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .person-card.common {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+        
+        .person-name {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .person-name::before {
+            content: '👤';
+            font-size: 1.3em;
+        }
+        
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            padding: 10px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .task-item:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+        
+        .task-item::before {
+            content: '✓';
+            font-weight: bold;
+            color: #4ade80;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 20px -20px;
+            padding: 0 20px;
+        }
+        
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+        }
+        
+        .budget-table th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .budget-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .budget-table tr:hover {
+            background: var(--light);
+        }
+        
+        .category {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .category.food { background: #fef3c7; color: #92400e; }
+        .category.supplies { background: #dbeafe; color: #1e3a8a; }
+        .category.activity { background: #fce7f3; color: #831843; }
+        .category.facility { background: #d1fae5; color: #065f46; }
+        
+        .room-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .room-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .room-number {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .room-members {
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        .room-members strong {
+            color: var(--dark);
+        }
+        
+        .checklist {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .checklist h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .checkbox-item:hover {
+            background: #f3f4f6;
+            transform: translateX(3px);
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+        
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95rem;
+        }
+        
+        .checkbox-item.checked {
+            opacity: 0.6;
+        }
+        
+        .checkbox-item.checked label {
+            text-decoration: line-through;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .tab {
+                padding: 12px 15px;
+            }
+            
+            .timeline {
+                padding-left: 25px;
+            }
+            
+            .timeline::before {
+                width: 2px;
+            }
+            
+            .timeline-item {
+                padding: 12px;
+            }
+            
+            .timeline-item::before {
+                left: -29px;
+                width: 10px;
+                height: 10px;
+            }
+            
+            .person-card {
+                padding: 15px;
+            }
+            
+            .budget-table th,
+            .budget-table td {
+                padding: 8px 6px;
+            }
+            
+            .table-wrapper {
+                margin: 20px -15px;
+                padding: 0 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .info-box {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .tabs {
+                display: none;
+            }
+            
+            .tab-content {
+                display: block !important;
+                page-break-after: always;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1>🏕️ 성당포구 힐링 캠프</h1>
+                <p>2025년 11월 7일(금) ~ 11월 8일(토)</p>
+                <p>성당중학교 | 교직원 9명, 학생 12명</p>
+            </div>
+        </header>
+        
+        <nav class="tabs" role="tablist">
+            <button class="tab active" onclick="showTab('schedule')" role="tab">📅 일정표</button>
+            <button class="tab" onclick="showTab('teachers')" role="tab">👥 담당자</button>
+            <button class="tab" onclick="showTab('budget')" role="tab">💰 예산</button>
+            <button class="tab" onclick="showTab('rooms')" role="tab">🏠 숙소</button>
+            <button class="tab" onclick="showTab('important')" role="tab">⚠️ 중요사항</button>
+        </nav>
+        
+        <main class="content">
+            <!-- 일정표 탭 -->
+            <div id="schedule" class="tab-content active">
+                <h2>📅 상세 일정</h2>
+                
+                <div class="info-box primary">
+                    <strong>📍 장소:</strong> 성당포구 금강체험관 및 용안습지, 익산공공승마장<br>
+                    <strong>👥 참여:</strong> 교직원 9명, 학생 12명<br>
+                    <strong>📞 업무담당자:</strong> 정미영 (010-8697-1944)
+                </div>
+                
+                <h3>🗓️ 11월 7일 (금)</h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="time">13:15 - 13:45</span>
+                        <div class="activity-title">📋 캠프 안내 및 안전교육</div>
+                        <div class="activity-desc">
+                            • 장소: 성당중 기가실<br>
+                            • 말 간식 준비<br>
+                            • 담당: 정미영, 조하운
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">13:45 - 14:00</span>
+                        <div class="activity-title">🚌 이동 및 입실</div>
+                        <div class="activity-desc">
+                            • 성당포구 금강 체험관으로 이동<br>
+                            • 숙소 배정 및 짐 풀기<br>
+                            • 담당: 정미영, 한윤석, 조하운, 육주현
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">14:30 - 15:30</span>
+                        <div class="activity-title">🏹 국궁 체험</div>
+                        <div class="activity-desc">
+                            • 장소: 금강체험관 내 실외 국궁체험장소<br>
+                            • 담당: 체험관 강사, 조옥주<br>
+                            • 비용: 5,000원 x 12명 = 60,000원
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">15:40 - 15:50</span>
+                        <div class="activity-title">🚗 이동</div>
+                        <div class="activity-desc">
+                            • 익산공공승마장으로 이동<br>
+                            • 담당: 정미영, 한윤석, 조하운, 육주현
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">16:00 - 16:40</span>
+                        <div class="activity-title">🐴 승마 체험 및 먹이주기</div>
+                        <div class="activity-desc">
+                            • 장소: 익산공공승마장<br>
+                            • 승마 체험 + 먹이주기 체험<br>
+                            • 담당: 익산공공승마장 전문강사, 정미영, 한윤석, 조하운, 육주현<br>
+                            • 비용: 승마 8,000원 x 12명 + 먹이주기 2,000원 x 12명 = 120,000원<br>
+                            • 먹이주기 재료(당근 및 꼬지): 10,000원 x 5 = 50,000원
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">16:40 - 17:00</span>
+                        <div class="activity-title">🚗 복귀</div>
+                        <div class="activity-desc">
+                            • 성당포구 금강 체험관으로 이동<br>
+                            • 담당: 정미영, 한윤석, 조하운, 육주현
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">17:00 - 19:00</span>
+                        <div class="activity-title">🍖 저녁 식사 (바비큐)</div>
+                        <div class="activity-desc">
+                            • 장소: 성당포구 금강 체험관 바비큐장 (테이블 4개)<br>
+                            • 4개 테이블 별로 각각 준비<br>
+                            • 담당: 조옥주, 한인수, 백하늘, 박진아
+                            <strong>📦 14시 배달 (농협 성당포구 마트):</strong>
+                            목살, 상추, 김치, 햇반, 호박고구마, 쌈장, 소금, 음료수 등
+                            <strong>⚠️ 협의사항:</strong>
+                            • 차량 이동 제외 선생님들이 14시 배달 시 테이블 세팅<br>
+                            • 주방집게 6개 추가 구매 (조하운 선생님)<br>
+                            • 학생들: 상추 씻기, 고기 굽기, 햇반 데우기<br>
+                            • 설거지: 각 방으로 가져가서 처리
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">19:00 - 21:00</span>
+                        <div class="activity-title">🎤 노래방 & 간식</div>
+                        <div class="activity-desc">
+                            • 장소: 인근 노래방 (2개층)<br>
+                            • 1층: 1·2학년 / 2층: 3학년<br>
+                            • 인솔: 한인수, 정미영<br>
+                            • 비용: 노래방 16만원 + 과자·음료 12만원
+                            <strong>⚠️ 협의사항:</strong>
+                            한인수 부장님: 밖에서 대기하며 돌발상황 대비
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">21:00 - 22:00</span>
+                        <div class="activity-title">🌙 취침 준비</div>
+                        <div class="activity-desc">
+                            • 샤워와 취침준비, 자유시간<br>
+                            • 담당: 각 실 담당지도교사
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">22:00 ~</span>
+                        <div class="activity-title">😴 취침</div>
+                        <div class="activity-desc">
+                            • 각 실별 인원 체크 (담당: 정미영)<br>
+                            • 22시 이후 외출 금지
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>🗓️ 11월 8일 (토)</h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="time">07:00 - 09:00</span>
+                        <div class="activity-title">☀️ 기상 및 자전거 체험</div>
+                        <div class="activity-desc">
+                            • 기상 및 세면, 아침 식사 (라면 또는 햇반)<br>
+                            • 개별 산책 및 자전거 타기<br>
+                            • 담당: 담임선생님 및 정미영
+                            <strong>🚴 자전거 타기:</strong>
+                            • 희망자 전원 참여 원칙<br>
+                            • 인솔: 한윤석, 한인수 (구급약통 휴대)<br>
+                            • 비용: 96,000원 (학생자치회 예산)<br>
+                            • 선생님들: 교장선생님과 티타임
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">09:00 - 09:30</span>
+                        <div class="activity-title">🍡 쑥개떡 만들기</div>
+                        <div class="activity-desc">
+                            • 담당: 백하늘<br>
+                            • 비용: 1만원 x 21명 = 21만원
+                            <strong>⚠️ 협의사항:</strong>
+                            교장선생님이 교사들에게 비법 전수 (별도 테이블)
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">09:30 - 10:20</span>
+                        <div class="activity-title">🚂 바람개비 열차 체험</div>
+                        <div class="activity-desc">
+                            • 용안습지 생태체험<br>
+                            • 담당: 박진아, 조옥주<br>
+                            • 비용: 7,000원 x 21명 = 147,000원
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">10:20 - 11:00</span>
+                        <div class="activity-title">🧳 정리 및 퇴실</div>
+                        <div class="activity-desc">
+                            • 방 정리 및 짐 싸기<br>
+                            • 식기류 개수 확인 후 제자리 반납<br>
+                            • 담당: 전체교직원
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="time">11:00 - 11:20</span>
+                        <div class="activity-title">🏫 귀가</div>
+                        <div class="activity-desc">
+                            • 학교로 돌아온 후 귀가 안전 지도<br>
+                            • 점심 식사 없음
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 담당자별 준비사항 탭 -->
+            <div id="teachers" class="tab-content">
+                <h2>👥 담당자별 준비사항</h2>
+                
+                <div class="info-box warning">
+                    <strong>📋 행정 처리:</strong><br>
+                    • 총관리 감독: 윤인자 교장<br>
+                    • 보건 약품: 정미영<br>
+                    • 차량 운영: 정미영, 조하운, 한윤석, 육주현<br>
+                    • 출장 신청: 정미영 (교장 제외 8명 일괄 처리)<br>
+                    • 초과근무: 교장 제외 8명, 11/7(16:30~24:00) + 11/8(00:00~11:20)
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">정미영 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">총괄 업무 담당 (010-8697-1944)</li>
+                        <li class="task-item">보건 약품 및 구급약통 준비</li>
+                        <li class="task-item">차량 운영, 노래방 인솔</li>
+                        <li class="task-item">22시 각 실별 인원 체크</li>
+                        <li class="task-item">자전거 타기 희망자 신청 접수</li>
+                        <li class="task-item">출장 신청서 일괄 처리</li>
+                        <li class="task-item">코스모스 숙소 (윤인자 교장과 함께)</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">한윤석 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">일회용 식기류 구매 (종이접시, 종이컵, 대접류 각 21개 이상)</li>
+                        <li class="task-item">나무젓가락 준비 (집에서)</li>
+                        <li class="task-item">차량 운영, 자전거 체험 인솔</li>
+                        <li class="task-item">201호 숙소 담당 (학생 5명)</li>
+                        <li class="task-item">D테이블 지도</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">조하운 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">추가 식재료 구매 (키친타월 6개, 주방집게 6개, 구운 계란 30개, 그릴 소시지 6개, 마시멜로 4봉지)</li>
+                        <li class="task-item">농협 마트 단가 확인 후 품의</li>
+                        <li class="task-item">차량 운영, 14시 배달 시 테이블 세팅</li>
+                        <li class="task-item">301호 숙소 담당 (학생 5명)</li>
+                        <li class="task-item">B테이블 지도</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">한인수 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">노래방 인솔 (밖에서 대기하며 돌발상황 대비)</li>
+                        <li class="task-item">자전거 체험 인솔 (구급약통 휴대)</li>
+                        <li class="task-item">학생자치회 예산으로 자전거 대여비 지불</li>
+                        <li class="task-item">저녁 바비큐 담당</li>
+                        <li class="task-item">B테이블 지도</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">조옥주 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">국궁 체험 담당</li>
+                        <li class="task-item">저녁 바비큐 담당, 테이블 세팅</li>
+                        <li class="task-item">바람개비 열차 체험 담당</li>
+                        <li class="task-item">302호 숙소 담당 (학생 2명)</li>
+                        <li class="task-item">C테이블 지도, 식기류 관리</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">육주현 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">차량 운영, 14시 배달 시 테이블 세팅</li>
+                        <li class="task-item">승마장 체험 시 동행</li>
+                        <li class="task-item">C테이블 지도</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">백하늘 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">쑥개떡 만들기 활동 담당</li>
+                        <li class="task-item">저녁 바비큐 담당, 테이블 세팅</li>
+                        <li class="task-item">D테이블 지도</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">박진아 선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">바람개비 열차 체험 담당</li>
+                        <li class="task-item">저녁 바비큐 담당, 테이블 세팅</li>
+                        <li class="task-item">A테이블 지도</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-name">윤인자 교장선생님</div>
+                    <ul class="task-list">
+                        <li class="task-item">총관리 감독</li>
+                        <li class="task-item">교사 티타임 준비 (11/8 아침)</li>
+                        <li class="task-item">쑥개떡 만들기 시 교사들에게 비법 전수</li>
+                        <li class="task-item">A테이블 참여</li>
+                    </ul>
+                </div>
+                
+                <div class="person-card common">
+                    <div class="person-name">공통 준비사항</div>
+                    <ul class="task-list">
+                        <li class="task-item">물티슈 6개</li>
+                        <li class="task-item">쓰레기 봉투 (대형 파란색)</li>
+                        <li class="task-item">일회용 장갑 (위생장갑)</li>
+                        <li class="task-item">일회용 봉투 (비닐팩)</li>
+                        <li class="task-item">롤휴지 5개</li>
+                        <li class="task-item">나무젓가락 (한윤석, 다원 선생님)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 예산 탭 -->
+            <div id="budget" class="tab-content">
+                <h2>💰 예산 및 구매목록</h2>
+                
+                <div class="info-box primary">
+                    <h3 style="color: #0369a1; margin: 0 0 10px 0;">총 예산: 1,923,130원</h3>
+                    <p style="color: #0c4a6e; margin: 0;">※ 자전거 타기는 학생자치회 예산 별도 (96,000원)</p>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="budget-table">
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>품목</th>
+                                <th>단가</th>
+                                <th>개수</th>
+                                <th>합계</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #fef3c7;">
+                                <td colspan="5" style="font-weight: 700;"><span class="category activity">11/7 체험</span></td>
+                            </tr>
+                            <tr>
+                                <td>체험</td>
+                                <td>국궁 체험</td>
+                                <td>5,000원</td>
+                                <td>12명</td>
+                                <td style="font-weight: 600;">60,000원</td>
+                            </tr>
+                            <tr>
+                                <td>체험</td>
+                                <td>승마체험</td>
+                                <td>8,000원</td>
+                                <td>12명</td>
+                                <td style="font-weight: 600;">96,000원</td>
+                            </tr>
+                            <tr>
+                                <td>체험</td>
+                                <td>먹이주기체험</td>
+                                <td>2,000원</td>
+                                <td>12명</td>
+                                <td style="font-weight: 600;">24,000원</td>
+                            </tr>
+                            <tr>
+                                <td>재료</td>
+                                <td>먹이주기 재료</td>
+                                <td>10,000원</td>
+                                <td>5개</td>
+                                <td style="font-weight: 600;">50,000원</td>
+                            </tr>
+                            <tr style="background: #fef3c7;">
+                                <td colspan="5" style="font-weight: 700;"><span class="category food">11/7 저녁식사</span></td>
+                            </tr>
+                            <tr>
+                                <td>주재료</td>
+                                <td>목살 1kg</td>
+                                <td>22,500원</td>
+                                <td>9개</td>
+                                <td style="font-weight: 600;">202,500원</td>
+                            </tr>
+                            <tr>
+                                <td>채소</td>
+                                <td>상추(봉지)</td>
+                                <td>2,000원</td>
+                                <td>10봉지</td>
+                                <td style="font-weight: 600;">20,000원</td>
+                            </tr>
+                            <tr>
+                                <td>반찬</td>
+                                <td>김치 2.8kg</td>
+                                <td>31,300원</td>
+                                <td>2개</td>
+                                <td style="font-weight: 600;">62,600원</td>
+                            </tr>
+                            <tr>
+                                <td>조미료</td>
+                                <td>쌈장·소금</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="font-weight: 600;">18,880원</td>
+                            </tr>
+                            <tr>
+                                <td>주식</td>
+                                <td>오뚜기밥</td>
+                                <td>6,280원</td>
+                                <td>4개</td>
+                                <td style="font-weight: 600;">25,120원</td>
+                            </tr>
+                            <tr>
+                                <td>채소</td>
+                                <td>호박고구마</td>
+                                <td>10,500원</td>
+                                <td>3개</td>
+                                <td style="font-weight: 600;">31,500원</td>
+                            </tr>
+                            <tr>
+                                <td>용품</td>
+                                <td>호일·석쇠</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="font-weight: 600;">17,650원</td>
+                            </tr>
+                            <tr>
+                                <td>라면</td>
+                                <td>신라면</td>
+                                <td>4,150원</td>
+                                <td>6개</td>
+                                <td style="font-weight: 600;">24,900원</td>
+                            </tr>
+                            <tr>
+                                <td>연료</td>
+                                <td>숯</td>
+                                <td>5,400원</td>
+                                <td>6개</td>
+                                <td style="font-weight: 600;">32,400원</td>
+                            </tr>
+                            <tr>
+                                <td>대여</td>
+                                <td>바비큐장소</td>
+                                <td>30,000원</td>
+                                <td>4테이블</td>
+                                <td style="font-weight: 600;">120,000원</td>
+                            </tr>
+                            <tr>
+                                <td>음료</td>
+                                <td>물·음료</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="font-weight: 600;">20,580원</td>
+                            </tr>
+                            <tr style="background: #fef3c7;">
+                                <td colspan="5" style="font-weight: 700;"><span class="category activity">11/7 노래방</span></td>
+                            </tr>
+                            <tr>
+                                <td>대여</td>
+                                <td>노래방 2층</td>
+                                <td>80,000원</td>
+                                <td>2개</td>
+                                <td style="font-weight: 600;">160,000원</td>
+                            </tr>
+                            <tr>
+                                <td>간식</td>
+                                <td>과자 음료</td>
+                                <td>10,000원</td>
+                                <td>12명</td>
+                                <td style="font-weight: 600;">120,000원</td>
+                            </tr>
+                            <tr style="background: #fef3c7;">
+                                <td colspan="5" style="font-weight: 700;"><span class="category activity">11/8 체험</span></td>
+                            </tr>
+                            <tr>
+                                <td>체험</td>
+                                <td>쑥개떡</td>
+                                <td>10,000원</td>
+                                <td>21명</td>
+                                <td style="font-weight: 600;">210,000원</td>
+                            </tr>
+                            <tr>
+                                <td>체험</td>
+                                <td>바람개비 열차</td>
+                                <td>7,000원</td>
+                                <td>21명</td>
+                                <td style="font-weight: 600;">147,000원</td>
+                            </tr>
+                            <tr style="background: #d1fae5;">
+                                <td>체험</td>
+                                <td>자전거 (학생자치회)</td>
+                                <td>5,000원</td>
+                                <td>-</td>
+                                <td style="font-weight: 600;">96,000원 (별도)</td>
+                            </tr>
+                            <tr style="background: #fef3c7;">
+                                <td colspan="5" style="font-weight: 700;"><span class="category facility">숙소</span></td>
+                            </tr>
+                            <tr>
+                                <td>대여</td>
+                                <td>방대여</td>
+                                <td>80,000원</td>
+                                <td>6실</td>
+                                <td style="font-weight: 600;">480,000원</td>
+                            </tr>
+                            <tr style="background: var(--primary); color: white;">
+                                <td colspan="4" style="font-size: 1.1em; font-weight: 700;">합계</td>
+                                <td style="font-size: 1.2em; font-weight: 700;">1,923,130원</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="info-box warning" style="margin-top: 20px;">
+                    <h3>🛒 추가 구매 (조하운 선생님)</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>키친타월 6개, 주방집게 6개</li>
+                        <li>구운 계란 30개, 그릴 소시지 6개</li>
+                        <li>캠핑용 마시멜로 4봉지</li>
+                        <li>※ 품의 후 농협 마트 단가 확인</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box success">
+                    <h3>🏪 학교 준비물</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>물티슈 6개, 쓰레기 봉투, 위생장갑, 비닐팩, 롤휴지 5개</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 숙소 배정 탭 -->
+            <div id="rooms" class="tab-content">
+                <h2>🏠 숙소 배정</h2>
+                
+                <div class="info-box warning">
+                    <strong>⚠️ 학생 OT 시:</strong> 방 번호만 안내<br>
+                    <strong>📱 카톡방:</strong> 학생 전체 + 교사 9명
+                </div>
+                
+                <h3>🛏️ 학생 숙소</h3>
+                
+                <div class="room-card">
+                    <div class="room-number">201호</div>
+                    <div class="room-members">
+                        <strong>담당:</strong> 한윤석<br>
+                        <strong>학생:</strong> 류선우, 박기태, 이승훈, 김영준, 김지훈 (5명)
+                    </div>
+                </div>
+                
+                <div class="room-card">
+                    <div class="room-number">301호</div>
+                    <div class="room-members">
+                        <strong>담당:</strong> 조하운<br>
+                        <strong>학생:</strong> 권하람, 김경태, 김대영, 김도은, 김민규 (5명)
+                    </div>
+                </div>
+                
+                <div class="room-card">
+                    <div class="room-number">302호</div>
+                    <div class="room-members">
+                        <strong>담당:</strong> 조옥주<br>
+                        <strong>학생:</strong> 김윤하, 방윤아 (2명)
+                    </div>
+                </div>
+                
+                <h3>👨‍🏫 교사 숙소</h3>
+                
+                <div class="room-card" style="border-color: var(--primary);">
+                    <div class="room-number">303호</div>
+                    <div class="room-members">육주현, 조하운</div>
+                </div>
+                
+                <div class="room-card" style="border-color: var(--primary);">
+                    <div class="room-number">304호</div>
+                    <div class="room-members">한인수, 한윤석</div>
+                </div>
+                
+                <div class="room-card" style="border-color: var(--primary);">
+                    <div class="room-number">코스모스 (별관)</div>
+                    <div class="room-members">정미영, 윤인자 교장</div>
+                </div>
+                
+                <h3>🍖 바비큐 테이블</h3>
+                
+                <div class="room-card" style="background: linear-gradient(to right, #fef3c7, #fde68a);">
+                    <div class="room-number">A 테이블</div>
+                    <div class="room-members">류선우, 박기태, 이승훈, 정미영, 박진아, 윤인자</div>
+                </div>
+                
+                <div class="room-card" style="background: linear-gradient(to right, #dbeafe, #bfdbfe);">
+                    <div class="room-number">B 테이블</div>
+                    <div class="room-members">권하람, 김경태, 김도은, 조하운, 한인수</div>
+                </div>
+                
+                <div class="room-card" style="background: linear-gradient(to right, #fce7f3, #fbcfe8);">
+                    <div class="room-number">C 테이블</div>
+                    <div class="room-members">김윤하, 방윤아, 김지훈, 조옥주, 육주현</div>
+                </div>
+                
+                <div class="room-card" style="background: linear-gradient(to right, #d1fae5, #a7f3d0);">
+                    <div class="room-number">D 테이블</div>
+                    <div class="room-members">김대영, 김민규, 김영준, 백하늘, 한윤석</div>
+                </div>
+                
+                <div class="info-box success">
+                    <h3>🏠 숙소 비치물품</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>주방: 조리도구, 식기 (5인 기준)</li>
+                        <li>샤워실: 샴푸, 린스, 치약, 수건</li>
+                        <li>방: 드라이기</li>
+                        <li>❌ 미비치: 칫솔 (개인 지참 필수!)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 중요사항 탭 -->
+            <div id="important" class="tab-content">
+                <h2>⚠️ 중요사항 체크리스트</h2>
+                
+                <div class="checklist">
+                    <h3>🔥 안전 관리</h3>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>13:15 안전교육 실시</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>바비큐 시 교사 지도</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>자전거 안전 관리</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>구급약통 준비</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>22시 인원 체크</label>
+                    </div>
+                </div>
+                
+                <div class="checklist">
+                    <h3>📋 행정 처리</h3>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>출장 신청 (정미영)</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>초과근무 신청 (개별)</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>추가 식재료 품의</label>
+                    </div>
+                </div>
+                
+                <div class="checklist">
+                    <h3>🍽️ 식사 준비</h3>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>14시 배달 확인</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>식기류 개수 체크</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>테이블 세팅</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>역할 분담 안내</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <label>방장 지정</label>
+                    </div>
+                </div>
+                
+                <div class="info-box danger">
+                    <h3>🚨 특별 주의사항</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>14시 배달 - 차량 제외 선생님 세팅</li>
+                        <li>설거지: 각 방에서 처리</li>
+                        <li>전자레인지 1개 - 햇반은 냄비</li>
+                        <li>노래방: 한인수 밖에서 대기</li>
+                        <li>귀가: 10시 이전 목표</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box primary">
+                    <h3>📞 긴급 연락망</h3>
+                    <strong>총괄:</strong> 정미영 (010-8697-1944)
+                </div>
+                
+                <div class="info-box success">
+                    <h3>✅ 협의 완료</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>자전거: 희망자 전원 참여</li>
+                        <li>바비큐: 14시 배달 시 세팅</li>
+                        <li>식재료: 조하운 선생님 구매</li>
+                        <li>식기: 한윤석 선생님 구매</li>
+                        <li>설거지: 각 방에서 처리</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            element.classList.toggle('checked');
+        }
+    </script>
+</body>
+</html>
